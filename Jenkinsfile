@@ -9,7 +9,7 @@ pipeline {
            
 	}
         
-        stage(RemoteLogin){
+        stage(login){
            def remote = [:]
            remote.name = 'ubuntu-test'
            remote.host = '139.59.76.123'
