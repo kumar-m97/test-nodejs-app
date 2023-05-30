@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nodejs:
-    image: node-image:v3
+    image: node-image:v4
     container_name: node-container
     restart: always
     ports:
