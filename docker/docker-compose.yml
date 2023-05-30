@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  nodejs:
+    image: node-image:v3
+    container_name: node-container
+    restart: always
+    ports:
+      - "80:3000"
+
