@@ -8,13 +8,15 @@ pipeline {
 	   }
            
 	}
+       
+        stage(login){
            def remote = [:]
            remote.name = 'ubuntu-test'
            remote.host = '139.59.76.123'
            remote.user = 'root'
            remote.password = 'focus@7045Rite'
-           remote.allowAnyHosts = true        
-           stage(login){
+           remote.allowAnyHosts = true
+	   steps{
              sshCommand remote: remote, command: "cd /home/test-nodejs/test-nodejs-app"
              sshCommand remote: remote, command: "git pull"
              sshCommand remote: remote, command: "docker build . -f docker/Dockerfile -t node-image:v${env.BUILD_ID}"
@@ -25,6 +27,7 @@ pipeline {
              previous = sshCommand remote: remote, command: "cat docker-compose.yml | grep -o ':v.*' | sed 's/://g' ", returnStdout: true
              sshCommand remote: remote, command: "sed -i 's/${previous}/v${env.BUILD_ID}/g' docker-compose.yml"
              sshCommand remote: remote, command: "docker-compose up -d"
+	   }
 	}
 
     }	
