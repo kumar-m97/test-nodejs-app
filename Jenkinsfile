@@ -8,15 +8,13 @@ pipeline {
 	   }
            
 	}
-        
-        stage(login){
            def remote = [:]
            remote.name = 'ubuntu-test'
            remote.host = '139.59.76.123'
            remote.user = 'root'
            remote.password = 'focus@7045Rite'
-           remote.allowAnyHosts = true
-           
+           remote.allowAnyHosts = true        
+        stage(login){
            steps{
            sshCommand remote: remote, command: "cd /home/test-nodejs/test-nodejs-app"
            sshCommand remote: remote, command: "git pull"
