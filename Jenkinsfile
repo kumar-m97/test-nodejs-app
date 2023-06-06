@@ -14,8 +14,7 @@ node {
            remote.allowAnyHosts = true
 
 	stage('Build and Run'){
-           sshCommand remote: remote, command: "cd /home/test-nodejs/test-nodejs-app"
-           sshCommand remote: remote, command: "git pull"
+           sshCommand remote: remote, command: "cd /home/test-nodejs/test-nodejs-app; git pull"
            sshCommand remote: remote, command: "docker build . -f docker/Dockerfile -t node-image:v${env.BUILD_ID}"
            sshCommand remote: remote, command: "docker images"
            sshCommand remote: remote, command: "cd docker"
