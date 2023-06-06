@@ -4,6 +4,7 @@ node {
            checkout scm
         }
 
+        stage('Build and Run'){
         withCredentials( [usernamePassword( credentialsId: 'ssh-server', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])
            def remote = [:]
            remote.name = 'ubuntu-test'
@@ -12,7 +13,6 @@ node {
            remote.password = "${PASSWORD}"
            remote.allowAnyHosts = true
 
-        stage('Build and Run'){
            sshCommand remote: remote, command: "cd /home/test-nodejs/test-nodejs-app"
            sshCommand remote: remote, command: "git pull"
            sshCommand remote: remote, command: "docker build . -f docker/Dockerfile -t node-image:v${env.BUILD_ID}"
