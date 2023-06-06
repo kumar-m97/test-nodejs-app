@@ -4,7 +4,7 @@ node {
            checkout scm
         }
 
-        withCredentials( [usernamePassword( credentialsId: 'kumar-server', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])
+        withCredentials( [usernamePassword( credentialsId: 'ssh-server', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])
            def remote = [:]
            remote.name = 'ubuntu-test'
            remote.host = "139.59.76.123"
