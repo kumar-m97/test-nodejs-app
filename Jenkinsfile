@@ -4,8 +4,6 @@ node {
            checkout scm
         }
 
-     if (env.BRNACH_NAMe == 'master')
-     {
         withCredentials( [usernamePassword( credentialsId: 'ssh-server', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])
      {
            def remote = [:]
@@ -29,6 +27,5 @@ node {
            }
         }
       }
-     }
 
 
