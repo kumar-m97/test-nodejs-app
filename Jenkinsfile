@@ -4,8 +4,10 @@ node {
            checkout scm
         }
 
-        stage('Build and Run'){
+     if (env.BRNACH_NAMe == 'master')
+     {
         withCredentials( [usernamePassword( credentialsId: 'ssh-server', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])
+     {
            def remote = [:]
            remote.name = 'ubuntu-test'
            remote.host = "139.59.76.123"
@@ -13,6 +15,7 @@ node {
            remote.password = "${PASSWORD}"
            remote.allowAnyHosts = true
 
+	stage('Build and Run'){
            sshCommand remote: remote, command: "cd /home/test-nodejs/test-nodejs-app"
            sshCommand remote: remote, command: "git pull"
            sshCommand remote: remote, command: "docker build . -f docker/Dockerfile -t node-image:v${env.BUILD_ID}"
@@ -25,5 +28,7 @@ node {
            sshCommand remote: remote, command: "docker-compose up -d"
            }
         }
+      }
+     }
 
 
