@@ -1,31 +1,31 @@
-node {
-
-def codePath = '/home/test-nodejs/test-nodejs-app/'
-
-        stage('checkout'){
-           checkout scm
-        }
-
-        withCredentials( [usernamePassword( credentialsId: 'ssh-server', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])
-     {
-           def remote = [:]
-           remote.name = 'ubuntu-test'
-           remote.host = "139.59.76.123"
-           remote.user = "${USERNAME}"
-           remote.password = "${PASSWORD}"
-           remote.allowAnyHosts = true
-
-	stage('Build and Run'){
-           sshCommand remote: remote, command: "cd ${codePath}; git pull"
-           sshCommand remote: remote, command: "cd ${codePath}; docker build . -f docker/Dockerfile -t node-image:v${env.BUILD_ID}"
-           sshCommand remote: remote, command: "cd ${codePath}; docker images"
-           sshCommand remote: remote, command: "cd ${codePath}/docker; docker-compose down"
-           sshCommand remote: remote, command: "cd ${codePath}/docker; cp docker-compose.yml docker-compose.yml_old"
-           previous = sshCommand remote: remote, command: "cd ${codePath}/docker; cat docker-compose.yml | grep -o ':v.*' | sed 's/://g' ", returnStdout: true
-           sshCommand remote: remote, command: "cd ${codePath}/docker; sed -i 's/${previous}/v${env.BUILD_ID}/g' docker-compose.yml"
-           sshCommand remote: remote, command: "cd ${codePath}/docker; docker-compose up -d"
-           }
-        }
+pipeline {
+   agent any
+   environment {
+      SERVER_IP = '3.86.243.249'
+      APP_DIR = '/home/ubuntu/test-nodejs-app'
+      NODE_PROCESS_NAME = 'nodejs-app'
+   }
+   stages {
+      stage ('Deploy App') {
+         steps {
+            sshagent(credentials: ['app-ssh-key']){
+               sh '''
+               echo "Deployment is in Progress"
+               cd ${APP_DIR} || exit 1
+               git pull || exit 1
+               pm2 stop ${NODE_PROCESS_NAME} || true
+               npm install --production || exit 1
+               npm run build || exit 1
+               pm2 start ${NODE_PROCESS_NAME}
+               echo "Deployment successful!"
+            '''
+            }
+         }
       }
-
-
+   }
+   post {
+      always {
+         echo 'This pipeline was run'
+      }
+   } 
+}
