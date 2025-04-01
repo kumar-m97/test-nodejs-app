@@ -1,7 +1,7 @@
 pipeline {
    agent any
    environment {
-      SERVER_IP = '3.86.243.249'
+      SERVER_IP = '3.83.179.185'
       APP_DIR = '/home/ubuntu/test-nodejs-app'
       NODE_PROCESS_NAME = 'nodejs-app'
    }
