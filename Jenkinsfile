@@ -10,6 +10,7 @@ pipeline {
          steps {
             sshagent(credentials: ['app-ssh-key']){
                sh '''
+               hostname
                echo "Deployment is in Progress"
                cd ${APP_DIR} || exit 1
                git pull || exit 1
