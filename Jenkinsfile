@@ -14,6 +14,7 @@ pipeline {
                hostname
                echo "Deployment is in Progress"
                cd ${APP_DIR} || exit 1
+               pwd
                git pull || exit 1
                pm2 stop ${NODE_PROCESS_NAME} || true
                npm install --production || exit 1
