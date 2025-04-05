@@ -10,7 +10,7 @@ pipeline {
          steps {
             sshagent(credentials: ['app-ssh-key']){
                sh '''
-               ssh root@${3.83.179.185}
+               ssh root@${SERVER_IP}
                hostname
                echo "Deployment is in Progress"
                cd ${APP_DIR} || exit 1
