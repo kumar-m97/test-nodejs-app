@@ -16,7 +16,6 @@ pipeline {
                cd /home/ubuntu/test-nodejs-app
                pwd
                git pull
-               pm2 stop ${NODE_PROCESS_NAME} || true
                npm install --production
                npm run build
                pm2 start ${NODE_PROCESS_NAME}
