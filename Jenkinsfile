@@ -13,12 +13,12 @@ pipeline {
                ssh -o StrictHostKeyChecking=no root@${SERVER_IP} << 'ENDSSH'
                hostname
                echo "Deployment is in Progress"
-               cd ${APP_DIR} || exit 1
+               cd ${APP_DIR}
                pwd
-               git pull || exit 1
+               git pull
                pm2 stop ${NODE_PROCESS_NAME} || true
-               npm install --production || exit 1
-               npm run build || exit 1
+               npm install --production
+               npm run build
                pm2 start ${NODE_PROCESS_NAME}
                echo "Deployment successful!"
                ENDSSH
