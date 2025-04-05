@@ -10,7 +10,7 @@ pipeline {
          steps {
             sshagent(credentials: ['app-ssh-key']){
                sh '''
-               ssh -o StrictHostKeyChecking=no root@${SERVER_IP}
+               ssh -o StrictHostKeyChecking=no root@${SERVER_IP} << 'ENDSSH'
                hostname
                echo "Deployment is in Progress"
                cd ${APP_DIR} || exit 1
@@ -20,6 +20,7 @@ pipeline {
                npm run build || exit 1
                pm2 start ${NODE_PROCESS_NAME}
                echo "Deployment successful!"
+               ENDSSH
             '''
             }
          }
