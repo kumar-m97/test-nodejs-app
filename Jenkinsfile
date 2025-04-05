@@ -10,18 +10,18 @@ pipeline {
          steps {
             sshagent(credentials: ['app-ssh-key']){
                sh '''
-               ssh -o StrictHostKeyChecking=no root@${SERVER_IP} << 'ENDSSH'
-               hostname
-               echo "Deployment is in Progress"
-               cd /home/ubuntu/test-nodejs-app
-               pwd
-               git pull
-               pm2 stop nodejs-app
-               npm install
-               pm2 start nodejs-app
-               echo "Deployment successful!"
-               ENDSSH
-            '''
+                 ssh -o StrictHostKeyChecking=no root@${SERVER_IP} << 'ENDSSH'
+                   hostname
+                   echo "Deployment is in Progress"
+                   cd /home/ubuntu/test-nodejs-app
+                   pwd
+                   git pull
+                   pm2 stop nodejs-app
+                   npm install
+                   pm2 start nodejs-app
+                   echo "Deployment successful!"
+                 ENDSSH
+               '''
             }
          }
       }
